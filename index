@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>访问提示</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px 20px;
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .url-box {
+            margin-top: 20px;
+            padding: 12px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            word-break: break-all;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="container">
+    <h2>请等待...</h2>
+</div>
+
+<script>
+    const targetUrl = "https://renwudating.page.gd/app.html";
+
+    function isWeChatBrowser() {
+        return /MicroMessenger/i.test(navigator.userAgent);
+    }
+
+    if (isWeChatBrowser()) {
+        document.getElementById("container").innerHTML = `
+            <h2>请使用系统浏览器打开</h2>
+            <p>不支持该内核版本。</p>
+            <p>请复制以下网址到浏览器访问：</p>
+            <div class="url-box" id="url">${targetUrl}</div>
+            <button onclick="copyUrl()">复制网址</button>
+        `;
+
+        window.copyUrl = function () {
+            navigator.clipboard.writeText(targetUrl)
+                .then(() => alert("网址已复制"))
+                .catch(() => alert("复制失败，请手动复制"));
+        };
+    } else {
+        window.location.href = targetUrl;
+    }
+</script>
+</body>
+</html>
